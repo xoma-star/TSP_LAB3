@@ -1,0 +1,2 @@
+export const BoxMullerTrigonometry1 = (x, y) => Math.sqrt(-2 * Math.log(x)) * Math.cos(2 * Math.PI * y)
+export const BoxMullerTrigonometry2 = (x, y) => Math.sqrt(-2 * Math.log(x)) * Math.sin(2 * Math.PI * y)

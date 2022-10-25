@@ -1,6 +1,7 @@
 //https://datatab.net/statistics-calculator/charts/create-histogram
 
 import fs from 'fs'
+import {BoxMullerTrigonometry1, BoxMullerTrigonometry2} from './BoxMuller.js'
 
 const data = []
 const data2 = []
@@ -32,16 +33,20 @@ const boxMuller500 = []
 const boxMuller1000 = []
 
 
-while(boxMuller100.length < 100){
+while(true){
   const x = Math.random()
   const y = Math.random()
-  const r = Math.sqrt(x ** 2 + y ** 2)
-  const n1 = Math.sqrt(-2 * Math.log(x)) * Math.cos(2 * Math.PI * y)
-  const n2 = Math.sqrt(-2 * Math.log(x)) * Math.sin(2 * Math.PI * y)
-  boxMuller100.push(n1, n2)
+  const n1 = BoxMullerTrigonometry1(x, y)
+  const n2 = BoxMullerTrigonometry2(x, y)
+  if(boxMuller100.length < 100) boxMuller100.push(n1, n2)
+  else if(boxMuller500.length < 500) boxMuller500.push(n1, n2)
+  else if(boxMuller1000.length < 1000) boxMuller1000.push(n1, n2)
+  else break
 }
 
 fs.writeFile('./export/boxMuller100.csv', boxMuller100.map((x, i) => `${i},${x}`).join("\n"), 'utf8', e => {if(e) console.log(e)})
+fs.writeFile('./export/boxMuller500.csv', boxMuller500.map((x, i) => `${i},${x}`).join("\n"), 'utf8', e => {if(e) console.log(e)})
+fs.writeFile('./export/boxMuller1000.csv', boxMuller1000.map((x, i) => `${i},${x}`).join("\n"), 'utf8', e => {if(e) console.log(e)})
 
 const mathExpect = data.reduce((a, b) => a + b) / data.length
 
